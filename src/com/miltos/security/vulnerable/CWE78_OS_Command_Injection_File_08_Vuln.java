@@ -33,17 +33,17 @@ public class CWE78_OS_Command_Injection_File_08_Vuln {
      * should be able to figure out that every call to these
      * methods will return true or return false.
      */
-    private static boolean privateReturnsTrue()
+    private static boolean privateReturnsTrue() throws Exception
     {
         return true;
     }
 
-    private static boolean privateReturnsFalse()
+    private static boolean privateReturnsFalse() throws Exception
     {
         return false;
     }
     
-	public static void bad(String param) throws InterruptedException, IOException {
+	public static void bad(String param) throws Exception {
 		//TODO: Remove this print 
 		System.out.println("Inside BAD method");
 		// 1. Define the data of the command
@@ -80,7 +80,7 @@ public class CWE78_OS_Command_Injection_File_08_Vuln {
 		
 	}
 	
-    public static void good(String param) throws InterruptedException, IOException {
+    public static void good(String param) throws Exception {
     	
     	// 1. Read the parameter
         String data = param;
@@ -104,7 +104,7 @@ public class CWE78_OS_Command_Injection_File_08_Vuln {
 
     }
     
-	public static void main(String[] args) throws InterruptedException, IOException {
+	public static void main(String[] args) throws Exception {
 		
 		//TODO: Remove this print
 		System.out.println("This is a dummy class!!");

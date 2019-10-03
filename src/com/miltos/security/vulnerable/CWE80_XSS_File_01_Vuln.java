@@ -31,7 +31,7 @@ public class CWE80_XSS_File_01_Vuln {
 	
 	final static String DATA = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 
-	public static void bad(String param) throws InterruptedException, IOException {
+	public static void bad(String param) throws Exception {
 		//TODO: Remove this print 
 		System.out.println("Inside BAD method");
 		// 1. Define the data of the command
@@ -58,7 +58,7 @@ public class CWE80_XSS_File_01_Vuln {
 		
 	}
 	
-    public static void good(String param) throws InterruptedException, IOException {
+    public static void good(String param) throws Exception {
     	
     	// 1. Read the parameter
         String data = param;
@@ -93,7 +93,7 @@ public class CWE80_XSS_File_01_Vuln {
         fw.close();
     }
     
-	public static void main(String[] args) throws InterruptedException, IOException {
+	public static void main(String[] args) throws Exception {
 		
 		//TODO: Remove this print
 		System.out.println("This is a dummy class!!");

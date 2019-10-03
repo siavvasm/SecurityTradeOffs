@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 public class OWASP_XSS_Vuln {
 	final static String DATA_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 		
 		// 1. Open the desired file
     	FileReader fr = new FileReader(DATA_PATH);
@@ -76,7 +76,7 @@ public class OWASP_XSS_Vuln {
 
 	}
 
-	private static String doSomething(String parameter) {
+	private static String doSomething(String parameter) throws Exception {
 		if (parameter.equals("stop")) {
 			return "foo";
 		} else {
