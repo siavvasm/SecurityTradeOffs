@@ -20,7 +20,7 @@ public class OSCommandInjectionClean {
 	final static String DATA_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 	final static String APP_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\test.jar").getAbsolutePath();
 
-	public static void main(final String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		
 		// Initialize the objects required for reading the data from the corresponding file
     	FileReader fr = null;

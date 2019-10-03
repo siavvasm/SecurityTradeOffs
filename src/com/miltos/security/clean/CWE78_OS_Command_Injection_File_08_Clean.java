@@ -168,7 +168,7 @@ public class CWE78_OS_Command_Injection_File_08_Clean {
 		
 	}
 	
-    public static void good(final String param) throws InterruptedException, IOException {
+    public static void good( String param) throws InterruptedException, IOException {
     	
     	// 1. Read the parameter
         String data = param;
@@ -177,7 +177,7 @@ public class CWE78_OS_Command_Injection_File_08_Clean {
         /* Replace the parameter with a benign String */
         data = "foo";
 
-        final String osCommand;
+         String osCommand;
         if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
             /* running on Windows */
             osCommand = "c:\\WINDOWS\\SYSTEM32\\cmd.exe /c dir ";
@@ -187,7 +187,7 @@ public class CWE78_OS_Command_Injection_File_08_Clean {
         }
 
         /* POTENTIAL FLAW: command injection */
-        final Process process = Runtime.getRuntime().exec(osCommand + data);
+         Process process = Runtime.getRuntime().exec(osCommand + data);
         process.waitFor();
 
     }
