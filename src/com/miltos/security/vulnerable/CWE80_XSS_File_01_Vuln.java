@@ -43,18 +43,22 @@ public class CWE80_XSS_File_01_Vuln {
         /* POTENTIAL FLAW: command injection */
         FileWriter fw = new FileWriter("./webpage.html");
         BufferedWriter bw = new BufferedWriter(fw);
+        if(!data.equals(null)){
+	        String htmlContent = "</body> "
+	        				   + "<label>"
+	        				   + "Data: "
+	        				   + data 
+	        				   + "</label>" 
+	        				   + "</body>";
+	        bw.write(htmlContent);
+        }
         
-        String htmlContent = "</body> "
-        				   + "<label>"
-        				   + "Data: "
-        				   + data 
-        				   + "</label>" 
-        				   + "</body>";
-        
-        bw.write(htmlContent);
-
         bw.close();
         fw.close();
+        
+        bw = null;
+        fw = null;
+        data = null;
 		
 	}
 	
@@ -65,7 +69,7 @@ public class CWE80_XSS_File_01_Vuln {
 
         /* FIX: Use a hardcoded string */
         /* Replace the parameter with a benign String */
-        data = "foo";
+        data = null;
 
         String osCommand;
         if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
@@ -79,15 +83,16 @@ public class CWE80_XSS_File_01_Vuln {
         /* POTENTIAL FLAW: command injection */
         FileWriter fw = new FileWriter("./webpage.html");
         BufferedWriter bw = new BufferedWriter(fw);
-        
-        String htmlContent = "</body> "
+        if(!param.equals(null)){
+        	String htmlContent = "</body> "
         				   + "<label>"
         				   + "Data: "
-        				   + data 
+        				   + param 
         				   + "</label>" 
         				   + "</body>";
         
-        bw.write(htmlContent);
+        	bw.write(htmlContent);
+        }
 
         bw.close();
         fw.close();
@@ -115,11 +120,14 @@ public class CWE80_XSS_File_01_Vuln {
 			parameter = parameterIt.next();
 			
 			// Execute the command with this parameter
-			bad(parameter);
+			if(!parameter.equals(null)){
+				bad(parameter);
+			}
 			
 			//TODO: Remove this print
 			System.out.println(parameter);
 		}
+		
 	}
 
 }

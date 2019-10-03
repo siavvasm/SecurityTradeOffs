@@ -50,29 +50,35 @@ public class OWASP_XSS_Vuln {
     		// 3.1 Read the parameter 
     		parameter = parameterIt.next();
     		
-    		// 3.2 Modify the parameter
-    		String bar = doSomething(parameter);
-    		
-    		// 3.3 Construct the command
-            FileWriter fw = new FileWriter("./webpage.html");
-            BufferedWriter bw = new BufferedWriter(fw);
-            
-            String htmlContent = "</body> "
-            				   + "<label>"
-            				   + "Data: "
-            				   + bar 
-            				   + "</label>" 
-            				   + "</body>";
-            
-            bw.write(htmlContent);
-
-            bw.close();
-            fw.close();
-
+	    		if(!parameter.equals(null)){
+	    		// 3.2 Modify the parameter
+	    		String bar = doSomething(parameter);
+	    		
+	    		// 3.3 Construct the command
+	            FileWriter fw = new FileWriter("./webpage.html");
+	            BufferedWriter bw = new BufferedWriter(fw);
+	            
+	            String htmlContent = "</body> "
+	            				   + "<label>"
+	            				   + "Data: "
+	            				   + bar 
+	            				   + "</label>" 
+	            				   + "</body>";
+	            
+	            bw.write(htmlContent);
+	
+	            bw.close();
+	            fw.close();
+	
+	    		}
     	}
     	// 4. Close the connection to the file
     	br.close();
     	fr.close();
+    	
+    	br = null;
+    	fr = null;
+    	parameter = null;
 
 	}
 

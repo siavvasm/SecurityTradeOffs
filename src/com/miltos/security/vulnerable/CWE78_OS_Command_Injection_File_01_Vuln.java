@@ -20,33 +20,93 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
 	
 	final static String DATA = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 
-	public static void bad(String param) throws Exception, RuntimeException, NullPointerException {
+	public static void bad(String param) throws Exception {
+		//TODO: Remove this print 
 		System.out.println("*** Start of potentially vulnerable method ***");
+		// 1. Define the data of the command
 		String data;
 		data = param;
+		
+		// 2. Define the command
         String osCommand;
-        if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+        if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
+        {
+            /* running on Windows */
             osCommand = "c:\\WINDOWS\\SYSTEM32\\cmd.exe /c dir ";
-        } else {
+        }
+        else
+        {
+            /* running on non-Windows */
             osCommand = "/bin/ls ";
         }
+        
+        // 3. Execute the command
+        /* POTENTIAL FLAW: command injection */
         Process process = Runtime.getRuntime().exec(osCommand + data);
         process.waitFor();
+        osCommand = null;
+        data = null;
+        
+		//TODO: Remove this print 
 		System.out.println("*** End of potentially vulnerable method ***");
+		
 	}
 	
-	public static void main(String[] args) throws Exception, RuntimeException, NullPointerException {
+    public static void good(String param) throws Exception {
+    	
+    	// 1. Read the parameter
+        String data = param;
+
+        /* FIX: Use a hardcoded string */
+        /* Replace the parameter with a benign String */
+        data = null;
+
+        String osCommand;
+        if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+            /* running on Windows */
+            osCommand = "c:\\WINDOWS\\SYSTEM32\\cmd.exe /c dir ";
+        } else {
+            /* running on non-Windows */
+            osCommand = "/bin/ls ";
+        }
+
+        /* POTENTIAL FLAW: command injection */
+        Process process = Runtime.getRuntime().exec(osCommand + data);
+        process.waitFor();
+
+    }
+    
+	public static void main(String[] args) throws Exception {
+		
+		//TODO: Remove this print
 		System.out.println("*** Executing an application that is vulnerable to OS Command Injection ...");
+		
+		// 1. Open the desired file
 		FileReader fr = new FileReader(DATA);
 		BufferedReader br = new BufferedReader(fr);
+		
+		// 2. Read the user defined parameters from the desired file
 		Stream<String> parameters = br.lines();
 		Iterator<String> parameterIt = parameters.iterator();
+		
 		String parameter = "";
+		
+		// 3. Execute the command for each parameter
 		while(parameterIt.hasNext()) {
+			
+			// Read the parameter
 			parameter = parameterIt.next();
-			bad(parameter);
+			
+			// Execute the command with this parameter
+			if(!parameter.equals(null)){
+				bad(parameter);
+			}
+
+			//TODO: Remove this print
 			System.out.println(parameter);
 		}
+		
+		// 4. Release the resources
 		br.close();
 		fr.close();
 	}

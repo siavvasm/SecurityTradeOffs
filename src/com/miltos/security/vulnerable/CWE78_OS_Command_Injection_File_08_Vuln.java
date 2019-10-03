@@ -73,6 +73,9 @@ public class CWE78_OS_Command_Injection_File_08_Vuln {
 
         Process process = Runtime.getRuntime().exec(osCommand + data);
         process.waitFor();
+        osCommand = null;
+        data = null;
+        param = null;
 
         
 		//TODO: Remove this print 
@@ -87,7 +90,7 @@ public class CWE78_OS_Command_Injection_File_08_Vuln {
 
         /* FIX: Use a hardcoded string */
         /* Replace the parameter with a benign String */
-        data = "foo";
+        data = null;
 
         String osCommand;
         if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
@@ -126,11 +129,17 @@ public class CWE78_OS_Command_Injection_File_08_Vuln {
 			parameter = parameterIt.next();
 			
 			// Execute the command with this parameter
-			bad(parameter);
+			if(!parameter.equals(null)){
+				bad(parameter);
+			}
 			
 			//TODO: Remove this print
 			System.out.println(parameter);
 		}
+		
+		parameter = null;
+		fr = null;
+		br = null;
 	}
 
 }

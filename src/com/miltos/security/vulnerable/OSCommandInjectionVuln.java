@@ -33,8 +33,9 @@ public class OSCommandInjectionVuln {
     		parameter = parameterIt.next();
     		
     		// Construct the command
-    		String command = "java -jar " + APP_PATH + " " + parameter;
-    		System.out.println("Command: " + command);
+    		if(!parameter.equals(null)){
+    			String command = "java -jar " + APP_PATH + " " + parameter;
+    			System.out.println("Command: " + command);
     		
     		// Create the ProcessBuilder object
     		builder = new ProcessBuilder("cmd.exe", "/c", command);
@@ -60,9 +61,15 @@ public class OSCommandInjectionVuln {
     		
     		System.out.println("Console Output: " + line);
     	}
-    	
+    		
+    	}
     	// 4. Close the connection to the file
     	br.close();
     	fr.close();
+    	
+    	br = null;
+    	fr = null;
+    	parameter = null;
+    	builder = null;
 	}
 }

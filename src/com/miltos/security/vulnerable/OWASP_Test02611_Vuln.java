@@ -49,37 +49,46 @@ public class OWASP_Test02611_Vuln {
     		parameter = parameterIt.next();
     		
     		// 3.2 Modify the parameter
-    		String bar = doSomething(parameter);
-
-    		// 3.3 Construct the command
-    		String cmd = "";	
-    		String a1 = "";
-    		String a2 = "";
-    		String[] args1 = null;
-    		String osName = System.getProperty("os.name");
-
-    		if (osName.indexOf("Windows") != -1) {
-            	a1 = "cmd.exe";
-            	a2 = "/c";
-            	cmd = "echo ";
-            	args1 = new String[]{a1, a2, cmd, bar};
-            } else {
-            	a1 = "sh";
-            	a2 = "-c";
-            	cmd = "ls";
-            	args1 = new String[]{a1, a2, cmd, bar};
-            	System.out.println(parameter);
-            }
     		
-    		// 3.4 Execute the command
-    		Runtime r = Runtime.getRuntime();
-    		Process p = r.exec(args1);
-            p.waitFor();
+    		if(!parameter.equals(null)){
+    			
+	    		String bar = doSomething(parameter);
+	
+	    		// 3.3 Construct the command
+	    		String cmd = "";	
+	    		String a1 = "";
+	    		String a2 = "";
+	    		String[] args1 = null;
+	    		String osName = System.getProperty("os.name");
+	
+	    		if (osName.indexOf("Windows") != -1) {
+	            	a1 = "cmd.exe";
+	            	a2 = "/c";
+	            	cmd = "echo ";
+	            	args1 = new String[]{a1, a2, cmd, bar};
+	            } else {
+	            	a1 = "sh";
+	            	a2 = "-c";
+	            	cmd = "ls";
+	            	args1 = new String[]{a1, a2, cmd, bar};
+	            	System.out.println(parameter);
+	            }
+	    		
+	    		// 3.4 Execute the command
+	    		Runtime r = Runtime.getRuntime();
+	    		Process p = r.exec(args1);
+	            p.waitFor();
+            
+    		}
 
     	}
     	// 4. Close the connection to the file
     	br.close();
     	fr.close();
+    	
+    	br = null;
+    	fr = null;
+    	parameter = null;
 
 	}
 
