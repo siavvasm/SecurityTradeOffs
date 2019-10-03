@@ -183,7 +183,7 @@ public class OWASP_XSS_Clean {
 	}
 
 	private static String doSomething(String parameter) {
-		if (parameter.equals("stop")) {
+		if ("stop".equals(parameter)) {
 			return "foo";
 		} else {
 			return parameter;

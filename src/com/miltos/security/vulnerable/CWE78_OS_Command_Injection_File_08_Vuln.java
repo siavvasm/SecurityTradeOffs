@@ -136,10 +136,6 @@ public class CWE78_OS_Command_Injection_File_08_Vuln {
 			//TODO: Remove this print
 			System.out.println(parameter);
 		}
-		
-		parameter = null;
-		fr = null;
-		br = null;
 	}
 
 }

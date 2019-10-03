@@ -20,7 +20,7 @@ public class OSCommandInjectionClean {
 	final static String DATA_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 	final static String APP_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\test.jar").getAbsolutePath();
 
-	public static void main(String[] args) throws IOException {
+	public static void main(final String[] args) throws IOException {
 		
 		// Initialize the objects required for reading the data from the corresponding file
     	FileReader fr = null;
@@ -54,9 +54,6 @@ public class OSCommandInjectionClean {
 	    		
 	    		// Read the value of the parameter
 	    		parameter = parameterIt.next();
-	    		
-	    		// TODO: Remove this print
-	    		System.out.println(parameter);
 	    		
 	    		// Create a logger file
 	    		File loggerFile = new File("C:/Users/siavvasm.ITI-THERMI.000/Desktop/ICCS/log4j-application.log");
@@ -96,9 +93,6 @@ public class OSCommandInjectionClean {
 	    		
 	    		// C. Encoding: Encode the parameter that will be provided as input to the command
 	    		parameter = ESAPI.encoder().encodeForOS(new WindowsCodec(), parameter);
-	    		
-	    		// TODO: Remove this print
-	    		System.out.println(parameter);
 	    		
 	    		/*
 	    		 * Execute the command

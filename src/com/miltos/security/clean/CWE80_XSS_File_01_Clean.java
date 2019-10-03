@@ -72,7 +72,6 @@ public class CWE80_XSS_File_01_Clean {
 		// C. Encoding: Encode data before inserting them in the HTML page
 
 		data = ESAPI.encoder().encodeForHTML(data); 
-		System.out.println(data);
      
 		// Add the data in the HTML page
         FileWriter fw = null;
@@ -125,7 +124,7 @@ public class CWE80_XSS_File_01_Clean {
 		
 	}
 	
-    public static void good(String param) throws InterruptedException, IOException {
+    public static void good(final String param) throws InterruptedException, IOException {
     	
     	// 1. Read the parameter
         String data = param;
@@ -134,7 +133,7 @@ public class CWE80_XSS_File_01_Clean {
         /* Replace the parameter with a benign String */
         data = "foo";
 
-        String osCommand;
+        final String osCommand;
         if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
             /* running on Windows */
             osCommand = "c:\\WINDOWS\\SYSTEM32\\cmd.exe /c dir ";
@@ -144,7 +143,7 @@ public class CWE80_XSS_File_01_Clean {
         }
 
         /* POTENTIAL FLAW: command injection */
-        Process process = Runtime.getRuntime().exec(osCommand + data);
+        final Process process = Runtime.getRuntime().exec(osCommand + data);
         process.waitFor();
 
     }
@@ -175,8 +174,6 @@ public class CWE80_XSS_File_01_Clean {
 				// Execute the command with this parameter
 				bad(parameter);
 				
-				//TODO: Remove this print
-				System.out.println(parameter);
 			}
 		} catch(IOException e) {
 			logger.error("The file could not be found!");
