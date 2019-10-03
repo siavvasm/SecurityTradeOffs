@@ -1,3 +1,22 @@
+/**
+* OWASP Benchmark Project v1.2
+*
+* This file is part of the Open Web Application Security Project (OWASP)
+* Benchmark Project. For details, please see
+* <a href="https://www.owasp.org/index.php/Benchmark">https://www.owasp.org/index.php/Benchmark</a>.
+*
+* The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
+* of the GNU General Public License as published by the Free Software Foundation, version 2.
+*
+* The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+* even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* @author Nick Sanidas <a href="https://www.aspectsecurity.com">Aspect Security</a>
+* @created 2015
+*
+* Modified by: Miltiadis Siavvas
+*/
 package com.miltos.security.clean;
 
 import java.io.BufferedReader;
@@ -14,53 +33,35 @@ import org.apache.log4j.Logger;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.codecs.WindowsCodec;
 
-public class OSCommandInjectionClean {
-
-	final static Logger logger = Logger.getLogger(MultipleReadClean.class);
+public class OWASP_Test02611_Clean {
+	
+	final static Logger logger = Logger.getLogger(OWASP_Test02611_Clean.class);
 	final static String DATA_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
-	final static String APP_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\test.jar").getAbsolutePath();
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		
-		// Initialize the objects required for reading the data from the corresponding file
-    	FileReader fr = null;
-    	BufferedReader br = null;
-    	
-		try {
+		FileReader fr = null;
+		BufferedReader br = null;
+		
+		try{
 			
-			/*
-			 * 0. Read the input data (i.e. parameters)
-			 */
-			
-			// Setup a connection to the file containing the input data 
-			fr = new FileReader(DATA_PATH);
-			br = new BufferedReader(fr);
+			// 1. Open the desired file
+	    	fr = new FileReader(DATA_PATH);
+	    	br = new BufferedReader(fr);
 	    	
-	    	// Read the user-defined parameters from the corresponding file
+	    	// 2. Read the user-defined parameters from the corresponding file
 	    	Stream<String> parameters = br.lines();
 	    	Iterator<String> parameterIt = parameters.iterator();
 	    	
-	    	/*
-	    	 * 1. Execute the application for each parameter
-	    	 */
-	    	
-	    	// Initialize the required objects
 	    	String parameter = "";
 	    	ProcessBuilder builder;
 	    	Process process;
 	    	
-	    	// For each one of the retrieved parameters...
+	    	// 3. Execute the commands to the console
 	    	while(parameterIt.hasNext()) {
 	    		
-	    		// Read the value of the parameter
+	    		// 3.1 Read the parameter 
 	    		parameter = parameterIt.next();
-	    		
-	    		// TODO: Remove this print
-	    		System.out.println(parameter);
-	    		
-	    		// Create a logger file
-	    		File loggerFile = new File("C:/Users/siavvasm.ITI-THERMI.000/Desktop/ICCS/log4j-application.log");
-	    		loggerFile.createNewFile();
 	    		
 	    		// Log the parameter
 	    		if(logger.isDebugEnabled()) {
@@ -89,23 +90,44 @@ public class OSCommandInjectionClean {
 	    			logger.debug("The command does not contain any illegal character.");
 	    		}
 	    		
-	    		// C. Encoding: Create and encode the basic command
-	    		String command = "java -jar %s";
-	    		command = String.format(command, APP_PATH);
-	    		command =  ESAPI.encoder().encodeForOS(new WindowsCodec(), command);
 	    		
-	    		// C. Encoding: Encode the parameter that will be provided as input to the command
-	    		parameter = ESAPI.encoder().encodeForOS(new WindowsCodec(), parameter);
+	    		// 3.2 Modify the parameter
+	    		String bar = doSomething(parameter);
 	    		
-	    		// TODO: Remove this print
-	    		System.out.println(parameter);
+	    		// 3.3 Construct the command
+	    		String command = "";	
+	    		String a1 = "";
+	    		String a2 = "";
+	    		String[] args1 = null;
+	    		String osName = System.getProperty("os.name");
+	
+	    		if (osName.indexOf("Windows") != -1) {
+	            	a1 = "cmd.exe";
+	            	a2 = "/c";
+	            	command = "echo ";
+	            	
+	            	// C. Encoding: Create and encode the basic command and the parameter
+		    		command =  ESAPI.encoder().encodeForOS(new WindowsCodec(), command);
+		    		parameter = ESAPI.encoder().encodeForOS(new WindowsCodec(), parameter);
+
+	            } else {
+	            	a1 = "sh";
+	            	a2 = "-c";
+	            	command = "ls";
+
+	            	// C. Encoding: Create and encode the basic command and the parameter
+		    		command =  ESAPI.encoder().encodeForOS(new WindowsCodec(), command);
+		    		parameter = ESAPI.encoder().encodeForOS(new WindowsCodec(), parameter);
+
+	            }
 	    		
+	    		// 3.4 Execute the command
 	    		/*
 	    		 * Execute the command
 	    		 */
 	    		
-	    		// D. Parameterization: Provide command and data separately to the ProcessBuilder
-	    		builder = new ProcessBuilder("cmd.exe", "/c", command, " ", parameter);
+	    		// D. Parameterization: Use ProcessBuilder instead of Runtime.exec()
+	    		builder = new ProcessBuilder(a1, a2, command, parameter);
 	        	builder.redirectErrorStream(true);
 	        	
 	    		try {
@@ -132,20 +154,16 @@ public class OSCommandInjectionClean {
 		    			logger.debug("Command: " + command + " " + parameter);
 		    			logger.debug("Console Output: " + output);
 		    		}
-		    		
-				} catch (IOException e) {
-					logger.error("The process could not be executed successfully!");
-					logger.error(e.getMessage());
-				}
+	
+	    	} catch(IOException e){
+	    		logger.error("The file could not be found!");
+				logger.error(e.getMessage());
 	    	}
-	    	
-		} catch (FileNotFoundException e) {
-			
+	   }
+		} catch (IOException e){
 			logger.error("The file could not be found!");
 			logger.error(e.getMessage());
-			
 		} finally {
-			
 			/*
 			 * Properly release the resources
 			 */
@@ -174,9 +192,16 @@ public class OSCommandInjectionClean {
 				logger.error(e.getMessage());
 				
 			} 
+		}
 
+	}
+
+	private static String doSomething(String parameter) {
+		if (parameter.equals("stop")) {
+			return "foo";
+		} else {
+			return parameter;
 		}
 	}
+
 }
-
-

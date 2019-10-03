@@ -9,13 +9,13 @@ import java.util.stream.Stream;
 
 public class OSCommandInjectionVuln {
 	
-	final static String DATA_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\data2.txt").getAbsolutePath();
+	final static String DATA_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 	final static String APP_PATH = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\test.jar").getAbsolutePath();
 	
 	public static void main(String[] args) throws Exception {
 
     	// 1. Open the desired file
-    	FileReader fr = new FileReader("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\data2.txt");
+    	FileReader fr = new FileReader(DATA_PATH);
     	BufferedReader br = new BufferedReader(fr);
     	
     	// 2. Read the user-defined parameters from the corresponding file
