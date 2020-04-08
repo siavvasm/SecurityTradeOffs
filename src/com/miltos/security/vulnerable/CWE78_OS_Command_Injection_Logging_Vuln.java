@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public class CWE78_OS_Command_Injection_File_01_Vuln {
+public class CWE78_OS_Command_Injection_Logging_Vuln {
 	
 	final static String DATA = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 
@@ -24,6 +24,11 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
 		
 		//TODO: Remove this print 
 		System.out.println("*** Start of potentially vulnerable method ***");
+		System.out.println("* ");
+		System.out.println("* Issue: CWE78 - OS Command Injection");
+		System.out.println("* Source: Juliet Test Suite");
+		System.out.println("* ");
+		System.out.println("**********************************************");
 		
 		// 1. Define the data of the command
 		String data;
@@ -44,13 +49,15 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
         
         // 3. Execute the command
         /* POTENTIAL FLAW: command injection */
+        System.out.println("* The following OS Command is going to be executed: " + osCommand + " " + data);
         Process process = Runtime.getRuntime().exec(osCommand + data);
         process.waitFor();
         osCommand = null;
         data = null;
         
 		//TODO: Remove this print 
-		System.out.println("*** End of potentially vulnerable method ***");
+		System.out.println("* ");
+        System.out.println("*** End of potentially vulnerable method ***");
 		
 	}
 	

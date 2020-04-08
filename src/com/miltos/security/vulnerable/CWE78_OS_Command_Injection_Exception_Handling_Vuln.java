@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public class CWE78_OS_Command_Injection_File_01_Vuln {
+public class CWE78_OS_Command_Injection_Exception_Handling_Vuln {
 	
 	final static String DATA = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 

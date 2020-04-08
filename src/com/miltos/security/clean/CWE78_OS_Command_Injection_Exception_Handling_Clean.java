@@ -6,7 +6,7 @@ Template File: sources-sink-01.tmpl.java
 /*
 * Modified by: Miltiadis Siavvas
 */
-package com.miltos.security.vulnerable;
+package com.miltos.security.clean;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,11 +16,11 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public class CWE78_OS_Command_Injection_File_01_Vuln {
+public class CWE78_OS_Command_Injection_Exception_Handling_Clean {
 	
 	final static String DATA = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
 
-	public static void bad(String param) throws Exception {
+	public static void bad(String param) {
 		
 		//TODO: Remove this print 
 		System.out.println("*** Start of potentially vulnerable method ***");
@@ -44,8 +44,18 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
         
         // 3. Execute the command
         /* POTENTIAL FLAW: command injection */
-        Process process = Runtime.getRuntime().exec(osCommand + data);
-        process.waitFor();
+        Process process;
+		try {
+			process = Runtime.getRuntime().exec(osCommand + data);
+			process.waitFor();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+        
         osCommand = null;
         data = null;
         
@@ -54,7 +64,7 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
 		
 	}
 	
-    public static void good(String param) throws Exception {
+    public static void good(String param) {
     	
     	// 1. Read the parameter
         String data = param;
@@ -73,18 +83,30 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
         }
 
         /* POTENTIAL FLAW: command injection */
-        Process process = Runtime.getRuntime().exec(osCommand + data);
-        process.waitFor();
+        Process process;
+		try {
+			process = Runtime.getRuntime().exec(osCommand + data);
+			process.waitFor();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
 
     }
     
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		
 		//TODO: Remove this print
 		System.out.println("*** Executing an application that is vulnerable to OS Command Injection ...");
 		
 		// 1. Open the desired file
-		FileReader fr = new FileReader(DATA);
+		FileReader fr;
+		try {
+			fr = new FileReader(DATA);
+
 		BufferedReader br = new BufferedReader(fr);
 		
 		// 2. Read the user defined parameters from the desired file
@@ -111,6 +133,14 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
 		// 4. Release the resources
 		br.close();
 		fr.close();
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
 	}
 
 

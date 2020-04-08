@@ -1,3 +1,5 @@
+package com.miltos.security.clean;
+
 /* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE78_OS_Command_Injection__File_01.java
 Label Definition File: CWE78_OS_Command_Injection.label.xml
@@ -6,28 +8,44 @@ Template File: sources-sink-01.tmpl.java
 /*
 * Modified by: Miltiadis Siavvas
 */
-package com.miltos.security.vulnerable;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class CWE78_OS_Command_Injection_File_01_Vuln {
+import org.apache.log4j.Logger;
+import org.owasp.esapi.ESAPI;
+import org.owasp.esapi.codecs.UnixCodec;
+import org.owasp.esapi.codecs.WindowsCodec;
+
+public class CWE78_OS_Command_Injection_Logging_Clean {
 	
 	final static String DATA = new File("C:\\Users\\siavvasm.ITI-THERMI.000\\Desktop\\input_data.txt").getAbsolutePath();
-
-	public static void bad(String param) throws Exception {
-		
-		//TODO: Remove this print 
-		System.out.println("*** Start of potentially vulnerable method ***");
+	final static Logger logger = Logger.getLogger(CWE78_OS_Command_Injection_Logging_Clean.class);
+	
+	public static void bad(String param) throws InterruptedException, IOException {
 		
 		// 1. Define the data of the command
 		String data;
 		data = param;
+		
+		// Log the parameter
+		if(logger.isDebugEnabled()) {
+			logger.debug("*** Start of potentially vulnerable method ***");
+			logger.debug("*");
+			logger.debug("* Issue: CWE78 - OS Command Injection");
+			logger.debug("* Source: Juliet Test Suite");
+			logger.debug("* ");
+			logger.debug("* Input Parameter: " + data);
+		}
+		
+
 		
 		// 2. Define the command
         String osCommand;
@@ -42,26 +60,32 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
             osCommand = "/bin/ls ";
         }
         
-        // 3. Execute the command
-        /* POTENTIAL FLAW: command injection */
+   
+        // D. Parameterization: Use ProcessBuilder instead of Runtime.exec()
+        if(logger.isDebugEnabled()) {
+			logger.debug("* The command that it is going to be executed is: " + osCommand + " " + data);
+		}
         Process process = Runtime.getRuntime().exec(osCommand + data);
         process.waitFor();
         osCommand = null;
         data = null;
         
 		//TODO: Remove this print 
-		System.out.println("*** End of potentially vulnerable method ***");
-		
+        if(logger.isDebugEnabled()) {
+        	logger.debug("* ");
+        	logger.debug("*** End of potentially vulnerable method ***");
+        }
+        
 	}
 	
-    public static void good(String param) throws Exception {
+    public static void good(String param) throws InterruptedException, IOException {
     	
     	// 1. Read the parameter
         String data = param;
 
         /* FIX: Use a hardcoded string */
         /* Replace the parameter with a benign String */
-        data = null;
+        data = "foo";
 
         String osCommand;
         if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
@@ -78,10 +102,12 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
 
     }
     
-	public static void main(String[] args) throws Exception {
-		
+	public static void main(String[] args) throws InterruptedException, IOException {
+			
 		//TODO: Remove this print
-		System.out.println("*** Executing an application that is vulnerable to OS Command Injection ...");
+        if(logger.isDebugEnabled()) {
+        	logger.debug("*** Executing an application that is vulnerable to OS Command Injection ...");
+        }
 		
 		// 1. Open the desired file
 		FileReader fr = new FileReader(DATA);
@@ -105,13 +131,16 @@ public class CWE78_OS_Command_Injection_File_01_Vuln {
 			}
 
 			//TODO: Remove this print
-			System.out.println(parameter);
+	        if(logger.isDebugEnabled()) {
+	        	logger.debug("* " + parameter);
+	        }
 		}
 		
 		// 4. Release the resources
 		br.close();
 		fr.close();
+		
+			
 	}
-
 
 }
